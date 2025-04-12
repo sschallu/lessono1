@@ -1,0 +1,37 @@
+name: zenml_ci
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  run-staging-workflow:
+    runs-on: ubuntu-latest
+    env:
+      ZENML_HOST: ${{ secrets.ZENML_HOST }}
+      ZENML_API_KEY: ${{ secrets.ZENML_API_KEY }}
+
+    steps:
+      - name: check out repository code
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: install requirements
+        run: |
+          pip3 install -r requirements.txt
+
+      - name: connect to Zenml server
+        run: |
+          zenml login $ZENML_HOST --api-key $ZENML_API_KEY
+
+      - name: confirm zenml client is connected to zenml server
+        run: |
+          zenml status
+
+      - name: run pipeline
+        run: |
+          python first.py
+        
