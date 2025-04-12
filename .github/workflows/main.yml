@@ -23,9 +23,9 @@ jobs:
         run: |
           pip3 install -r requirements.txt
 
-      - name: connect to Zenml server
-        run: |
-          zenml login $ZENML_HOST --api-key $ZENML_API_KEY
+      # - name: connect to Zenml server
+      #   run: |
+      #     zenml login $ZENML_HOST --api-key $ZENML_API_KEY
 
       - name: confirm zenml client is connected to zenml server
         run: |
