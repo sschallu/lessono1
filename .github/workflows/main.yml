@@ -33,7 +33,7 @@ jobs:
           set timeout 10
           set host $env(ZENML_HOST)
           set api_key $env(ZENML_API_KEY)
-          spawn zenml login $host
+          spawn zenml login $host --api-key
           expect "API key:"
           send "$api_key\r"
           expect eof
