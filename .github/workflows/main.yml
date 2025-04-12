@@ -25,8 +25,18 @@ jobs:
 
       - name: connect to Zenml server
         run: |
-          export ZENML_STORE_URL=$ZENML_HOST
-          export ZENML_STORE_API_KEY=$ZENML_API_KEY
+          cat <<'EOF' > zenml_login.exp
+          #!/usr/bin/expect -f
+          set timeout 10
+          set host $env(ZENML_HOST)
+          set api_key $env(ZENML_API_KEY)
+          spawn zenml login $host
+          expect "API key:"
+          send "$api_key\r"
+          expect eof
+          EOF
+          chmod +x zenml_login.exp
+          ./zenml_login.exp
 
       - name: confirm zenml client is connected to zenml server
         run: |
